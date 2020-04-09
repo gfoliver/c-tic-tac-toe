@@ -3,9 +3,21 @@
 #include<stdbool.h>
 
 char table[3][3] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
-char playerChar = 'X', winner, *currentPlayer = &playerChar;
+char playerChar = 'X', winner, *currentPlayer = &playerChar, playerNames[2][20], currentPlayerName[20];
 int inputNumber, rounds = 0;
 bool end = false;
+
+void setPlayerNames(){
+	int i;
+	for (i = 0; i < 2; i++) {
+		printf("Player %d, type in your name: ", i + 1);
+		scanf("%s", playerNames[i]);
+	}
+	
+	for (i = 0; i < 20; i++) {
+		currentPlayerName[i] = playerNames[0][i];
+	}
+}
 
 void drawTable() {
 	int i, j;
@@ -24,11 +36,22 @@ void switchPlayer() {
 		*currentPlayer = 'O';
 	else
 		*currentPlayer = 'X';
+
+	int i;
+
+	if (rounds % 2 == 0)
+		for (i = 0; i < 20; i++)
+			currentPlayerName[i] = playerNames[0][i];
+	else
+		for (i = 0; i < 20; i++)
+			currentPlayerName[i] = playerNames[1][i];
 }
 
 void askForInput() {
-	printf("Type in the number of the slot: ");
+	printf("%s Type in the number of the slot: ", currentPlayerName);
+		
 	scanf("%d", &inputNumber);
+	
 }
 
 void handleInputInTable(int x, int y) {
@@ -37,7 +60,6 @@ void handleInputInTable(int x, int y) {
 	}
 	else {
 		table[x][y] = *currentPlayer;
-		switchPlayer();
 		rounds++;
 	}
 }
@@ -71,13 +93,15 @@ void handleInput() {
 		case 9:
 			handleInputInTable(2,2);
 		break;
+		default:
+		break;
 	}
 }
 
 void congratulations() {
 	system("cls");
 	drawTable();
-	printf("Congratulations! %c is the Winner", winner);
+	printf("Congratulations! %s is the Winner", currentPlayerName);
 }
 
 void endMessage() {
@@ -127,10 +151,16 @@ void checkWinner() {
 void gameLoop() {
 	while(end == false) {
 		system("cls");
+		
+		if (rounds == 0)
+			setPlayerNames();
+		
+		system("cls");
 		drawTable();
 		askForInput();
 		handleInput();
 		checkWinner();
+		switchPlayer();
 	}
 }
 
