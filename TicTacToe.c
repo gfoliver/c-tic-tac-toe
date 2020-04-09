@@ -49,14 +49,13 @@ void switchPlayer() {
 
 void askForInput() {
 	printf("%s Type in the number of the slot: ", currentPlayerName);
-		
 	scanf("%d", &inputNumber);
-	
+	handleInput();
 }
 
 void handleInputInTable(int x, int y) {
 	if (table[x][y] == 'X' || table[x][y] == 'O') {
-		return;
+		askForInput();
 	}
 	else {
 		table[x][y] = *currentPlayer;
@@ -158,7 +157,6 @@ void gameLoop() {
 		system("cls");
 		drawTable();
 		askForInput();
-		handleInput();
 		checkWinner();
 		switchPlayer();
 	}
