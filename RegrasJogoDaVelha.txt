@@ -1,0 +1,7 @@
+Regras do Jogo da Velha
+
+O tabuleiro  é uma matriz de três linhas por três colunas.
+O primeiro jogador sempre terá o marcador como um xis (X) e o segundo sempre terá o marcador com um círculo (O).
+Os jogadores jogam alternadamente, uma marcação por vez, numa lacuna que esteja vazia.
+O objetivo é conseguir três círculos ou três xis em linha, seja ela horizontal, vertical ou diagonal , e ao mesmo tempo, quando possível, impedir o adversário de ganhar na próxima jogada.
+Caso nenhum jogador saia vitorioso, se considerado sempre como um empate.
