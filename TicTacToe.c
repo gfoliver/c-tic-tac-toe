@@ -1,6 +1,10 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include<stdbool.h>
+#include "setPlayerNames.c"
+#include "drawTable.c"
+#include "switchPlayer.c"
+#include "messages.c"
 
 // Variavel responsavel pelos campos do tabuleiro (3 linhas e 3 colunas)
 char table[3][3] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
@@ -20,72 +24,16 @@ int inputNumber, rounds = 0;
 // Variavel responsavel pelo fim do jogo
 bool end = false;
 
-//Função responsá¡vel pela "setagem" dos nomes dos jogadores
-void setPlayerNames(){
-    // Variável para o loop seguinte
-	int i;
-
-    // Loop que pega o input do nome dos jogadores
-	for (i = 0; i < 2; i++) {
-		printf("Player %d, type in your name: ", i + 1);
-		scanf("%s", playerNames[i]);
-	}
-	
-    // Guarda a string informada anteriormente na variável currentPlayerName
-	for (i = 0; i < 20; i++) {
-		currentPlayerName[i] = playerNames[0][i];
-	}
-}
-
-// Printa na tela o tabuleiro
-void drawTable() {
-	int i, j;
-	
-    // Loop responsavel pela impressão do tabuleiro
-	for (i = 0; i < 3; i++) {
-		for (j = 0; j < 3; j++) {
-			printf(" %c ", table[i][j]);
-		}
-		
-		printf("\r\n");
-	}
-}
-
-// Função responsavel por controlar as rodadas
-void switchPlayer() {
-	if (*currentPlayer == 'X')
-		*currentPlayer = 'O';
-	else
-		*currentPlayer = 'X';
-
-	int i;
-
-    // Jogador n° 1 sempre jogará em rodadas pares
-    // Jogador n° 2 sempre jogará em rodadas ímpares
-	if (rounds % 2 == 0)
-		for (i = 0; i < 20; i++)            
-			currentPlayerName[i] = playerNames[0][i];
-	else
-		for (i = 0; i < 20; i++)
-			currentPlayerName[i] = playerNames[1][i];
-}
-
-// Função responsável pela entrada do jogador
-void askForInput() {
-    // Pede pelo input do jogador
-	printf("%s Type in the number of the slot: ", currentPlayerName);
-    // Recebe input
-	scanf("%d", &inputNumber);
-    // Chama função que pega o input recebido e verifica com os campos do tabuleiro
-	handleInput();
-}
-
 // Função verifica se o campo do tabuleiro já foi escolhido anteriormente
 void handleInputInTable(int x, int y) {
     // Caso o campo seja 'X' ou 'O'...
 	if (table[x][y] == 'X' || table[x][y] == 'O') {
-        // ... é chamada a função que vai pedir para o jogador informar o campo novamente
-		askForInput();
+		// Pede pelo input do jogador
+		printf("%s Type in the number of the slot: ", currentPlayerName);
+	    // Recebe input
+		scanf("%d", &inputNumber);
+	    // Chama função que pega o input recebido e verifica com os campos do tabuleiro
+		handleInput();
 	}
     // Caso não tenha sido escolhido ainda, o campo recebe a marcação do jogador (X ou O)
 	else {
@@ -134,22 +82,17 @@ void handleInput() {
             // Chama função que vai verificar se o campo não foi escolhido anteriormente
 			handleInputInTable(2,2);
 		break;
-		default:
-		break;
 	}
 }
 
-// Função que parabeniza o ganhador
-void congratulations() {
-	system("cls");
-	drawTable();
-	printf("Congratulations! %s is the Winner", currentPlayerName);
-}
-
-// Função que imprime na tela caso a partida não tenha nenhum ganhador
-void endMessage() {
-	system("cls");
-	printf("Tie \r\n");
+// Função responsável pela entrada do jogador
+void askForInput() {
+    // Pede pelo input do jogador
+	printf("%s Type in the number of the slot: ", currentPlayerName);
+    // Recebe input
+	scanf("%d", &inputNumber);
+    // Chama função que pega o input recebido e verifica com os campos do tabuleiro
+	handleInput();
 }
 
 // Função que verifica se algum jogador ganhou a partida
@@ -158,7 +101,7 @@ void checkWinner() {
 	if (table[0][0] == table[1][1] && table[1][1] == table[2][2]) {
 		end = true;
 		winner = table[0][0];
-		congratulations();
+		congratulations(table, currentPlayerName);
 		return;
 	}
 
@@ -166,7 +109,7 @@ void checkWinner() {
 	if (table[0][2] == table[1][1] && table[1][1] == table[2][0]) {
 		end = true;
 		winner = table[0][2];
-		congratulations();
+		congratulations(table, currentPlayerName);
 		return;
 	}
 	
@@ -178,14 +121,14 @@ void checkWinner() {
 		if (table[i][0] == table[i][1] && table[i][1] == table[i][2]) {
 			end = true;
 			winner = table[i][0];
-			congratulations();
+			congratulations(table, currentPlayerName);
 			return;
 		}
 		
 		if (table[0][i] == table[1][i] && table[1][i] == table[2][i]) {
 			end = true;
 			winner = table[0][i];
-			congratulations();
+			congratulations(table, currentPlayerName);
 			return;
 		}
 	}
@@ -197,27 +140,22 @@ void checkWinner() {
 	}
 }
 
-// Função principal responsável pela chamada das funções que vão construir o jogo
-void gameLoop() {
+int main() {
 	while(end == false) {
 		system("cls");
 		
 		if (rounds == 0)
             // "Setagem" dos nomes
-			setPlayerNames();
+			setPlayerNames(playerNames, currentPlayerName);
 		
 		system("cls");
         // Mostra tabuleiro
-		drawTable();
+		drawTable(table);
         // Pede por valor referente ao campo do tabuleiro
 		askForInput();
         // Verifica se alguem ganhou
 		checkWinner();
         // Muda de rodada
-		switchPlayer();
+		switchPlayer(currentPlayer, currentPlayerName, playerNames, rounds);
 	}
-}
-
-int main() {
-	gameLoop();
 }
