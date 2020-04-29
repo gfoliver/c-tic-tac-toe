@@ -1,3 +1,6 @@
+#include "messages.h"
+#include <stdio.h>
+#include <stdlib.h>
 // Função que parabeniza o ganhador
 void congratulations(char table[3][3], char currentPlayerName[20]) {
 	system("cls");

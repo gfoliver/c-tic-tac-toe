@@ -1,3 +1,6 @@
+#include "drawTable.h"
+#include <stdio.h>
+#include <stdlib.h>
 // Printa na tela o tabuleiro
 void drawTable(char table[3][3]) {
 	int i, j;

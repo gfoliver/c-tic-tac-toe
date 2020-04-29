@@ -1,3 +1,5 @@
+#include "setPlayerNames.h"
+
 // Função responsavel por controlar as rodadas
 void switchPlayer(char *currentPlayer, char currentPlayerName[20], char playerNames[2][20], int rounds) {
 	if (*currentPlayer == 'X')

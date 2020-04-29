@@ -1,10 +1,10 @@
 #include<stdio.h>
 #include <stdlib.h>
 #include<stdbool.h>
-#include "setPlayerNames.c"
-#include "drawTable.c"
-#include "switchPlayer.c"
-#include "messages.c"
+#include "setPlayerNames.h"
+#include "drawTable.h"
+#include "switchPlayer.h"
+#include "messages.h"
 
 // Variavel responsavel pelos campos do tabuleiro (3 linhas e 3 colunas)
 char table[3][3] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
@@ -24,7 +24,6 @@ int inputNumber, rounds = 0;
 // Variavel responsavel pelo fim do jogo
 bool end = false;
 
-// Função verifica se o campo do tabuleiro já foi escolhido anteriormente
 void handleInputInTable(int x, int y) {
     // Caso o campo seja 'X' ou 'O'...
 	if (table[x][y] == 'X' || table[x][y] == 'O') {
