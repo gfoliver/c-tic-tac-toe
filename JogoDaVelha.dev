@@ -167,7 +167,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit13]
-FileName=TicTacToe.c
+FileName=Main.c
 CompileCpp=0
 Folder=
 Compile=1
